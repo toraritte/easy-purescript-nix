@@ -89,7 +89,14 @@ inputs // {
 
   buildInputs = buildInputs;
 
-  shell = pkgs.runCommand "easy-purescript-nix-shell" {
-    buildInputs = buildInputs;
-  } "";
+  # LAND `runCommand`
+  # LAND + Documented(?) here: https://nixos.org/nixpkgs/manual/#:~:text=This%20takes%20three%20arguments
+  # LAND + Implemented here: https://github.com/NixOS/nixpkgs/blob/c60e559e130bc8b0b32471cf31f51237138c10c2/pkgs/build-support/trivial-builders.nix#L42
+  shell =
+    let
+      name = "easy-purescript-nix-shell";
+      env  = { buildInputs = buildInputs; };
+      buildCommand = "";
+    in
+      pkgs.runCommand name env buildCommand;
 }
